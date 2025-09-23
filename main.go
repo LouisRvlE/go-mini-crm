@@ -13,13 +13,26 @@ type Contact struct {
 	email string
 }
 
+func (c *Contact) updateContact(name, email string) {
+	if name != "" {
+		c.name = name
+	}
+	if email != "" {
+		c.email = email
+	}
+}
+
+func (c *Contact) Display() {
+	fmt.Printf("Id: %d, Nom: %s, Email: %s\n", c.id, c.name, c.email)
+}
+
 func main() {
 	addFlag := flag.Bool("add", false, "Ajouter un contact directement")
 	nameFlag := flag.String("name", "", "Nom du contact à ajouter")
 	emailFlag := flag.String("email", "", "Email du contact à ajouter")
 	flag.Parse()
 
-	contacts := make(map[int]Contact)
+	contacts := make(map[int]*Contact)
 	idCounter := 1
 
 	if *addFlag {
@@ -29,9 +42,11 @@ func main() {
 			os.Exit(1)
 		}
 
-		contact := Contact{id: idCounter, name: *nameFlag, email: *emailFlag}
+		contact := &Contact{id: idCounter, name: *nameFlag, email: *emailFlag}
 		contacts[idCounter] = contact
-		fmt.Printf("Contact ajouté avec succès : Id=%d, Nom=%s, Email=%s\n", contact.id, contact.name, contact.email)
+		idCounter++
+		fmt.Print("Contact ajouté avec succès : ")
+		contact.Display()
 	}
 
 	for {
@@ -55,6 +70,11 @@ func main() {
 		case "5":
 			fmt.Println("C'était un plaisir !")
 			os.Exit(0)
+		case "q":
+			fmt.Println("Tu me quittes comme ça ?")
+			os.Exit(0)
+		case "c":
+			fmt.Print("\033[H\033[2J")
 		default:
 			fmt.Println("Option invalide :(")
 		}
@@ -70,7 +90,7 @@ func showMenu() {
 	fmt.Println("5. Quitter")
 }
 
-func addContact(id int) Contact {
+func addContact(id int) *Contact {
 	fmt.Print("\nNom : ")
 	var name string
 	fmt.Scanln(&name)
@@ -79,22 +99,22 @@ func addContact(id int) Contact {
 	var email string
 	fmt.Scanln(&email)
 
-	return Contact{id: id, name: name, email: email}
+	return &Contact{id: id, name: name, email: email}
 }
 
-func listContacts(contacts map[int]Contact) {
-	if len(contacts) == 0 {
-		fmt.Println("\nAucun contact enregistré")
-		return
-	}
+func listContacts(contacts map[int]*Contact) {
+       if len(contacts) == 0 {
+	       fmt.Println("\nAucun contact enregistré")
+	       return
+       }
 
 	fmt.Println("\n--- Liste des contacts ---")
 	for _, contact := range contacts {
-		fmt.Printf("Id: %d, Nom: %s, Email: %s\n", contact.id, contact.name, contact.email)
+		contact.Display()
 	}
 }
 
-func removeContact(contacts map[int]Contact) {
+func removeContact(contacts map[int]*Contact) {
 	fmt.Print("Id du contact à supprimer : ")
 	var idStr string
 	fmt.Scanln(&idStr)
@@ -113,7 +133,7 @@ func removeContact(contacts map[int]Contact) {
 	fmt.Println("Contact supprimé avec succès")
 }
 
-func updateContact(contacts map[int]Contact) {
+func updateContact(contacts map[int]*Contact) {
 	fmt.Print("Id du contact à mettre à jour : ")
 	var idStr string
 	fmt.Scanln(&idStr)
@@ -123,26 +143,20 @@ func updateContact(contacts map[int]Contact) {
 		return
 	}
 
-	contact, exist := contacts[id]
-	if !exist {
-		fmt.Println("Contact non trouvé")
-		return
-	}
+       contact, exist := contacts[id]
+       if !exist {
+	       fmt.Println("Contact non trouvé")
+	       return
+       }
 
-	fmt.Printf("Nom actuel : %s\nNouveau nom (laisser vide pour ne pas changer) : ", contact.name)
-	var newName string
-	fmt.Scanln(&newName)
-	if newName != "" {
-		contact.name = newName
-	}
+       fmt.Printf("Nom actuel : %s\nNouveau nom (laisser vide pour ne pas changer) : ", contact.name)
+       var newName string
+       fmt.Scanln(&newName)
 
-	fmt.Printf("Email actuel : %s\nNouvel email (laisser vide pour ne pas changer) : ", contact.email)
-	var newEmail string
-	fmt.Scanln(&newEmail)
-	if newEmail != "" {
-		contact.email = newEmail
-	}
+       fmt.Printf("Email actuel : %s\nNouvel email (laisser vide pour ne pas changer) : ", contact.email)
+       var newEmail string
+       fmt.Scanln(&newEmail)
 
-	contacts[id] = contact
-	fmt.Println("Contact mis à jour avec succès")
+       contact.updateContact(newName, newEmail)
+       fmt.Println("Contact mis à jour avec succès")
 }
