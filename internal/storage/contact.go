@@ -1,42 +1,42 @@
-package main
+package storage
 
 import "fmt"
 
 type Contact struct {
-	id    int
-	name  string
-	email string
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 func (c *Contact) updateContact(name, email string) {
 	if name != "" {
-		c.name = name
+		c.Name = name
 	}
 	if email != "" {
-		c.email = email
+		c.Email = email
 	}
 }
 
 func (c *Contact) Display() {
-	fmt.Printf("Id: %d, Nom: %s, Email: %s\n", c.id, c.name, c.email)
+	fmt.Printf("Id: %d, Nom: %s, Email: %s\n", c.ID, c.Name, c.Email)
 }
 
 func NewContact(id int, name, email string) *Contact {
 	return &Contact{
-		id:    id,
-		name:  name,
-		email: email,
+		ID:    id,
+		Name:  name,
+		Email: email,
 	}
 }
 
 func (c *Contact) GetID() int {
-	return c.id
+	return c.ID
 }
 
 func (c *Contact) GetName() string {
-	return c.name
+	return c.Name
 }
 
 func (c *Contact) GetEmail() string {
-	return c.email
+	return c.Email
 }

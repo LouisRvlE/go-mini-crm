@@ -1,18 +1,25 @@
-package main
+package app
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
+
+	. "go-mini-crm/internal/storage"
 )
 
-func showMenu() {
-	fmt.Println("\n--- [mini-CRM] ---")
-	fmt.Println("1. Ajouter un contact")
-	fmt.Println("2. Lister tous les contacts")
-	fmt.Println("3. Supprimer un contact")
-	fmt.Println("4. Mettre à jour un contact")
-	fmt.Println("5. Quitter")
+func Run(store Storer) {
+	addFlag := flag.Bool("add", false, "Ajouter un contact directement")
+	nameFlag := flag.String("name", "", "Nom du contact à ajouter")
+	emailFlag := flag.String("email", "", "Email du contact à ajouter")
+	flag.Parse()
+
+	if *addFlag {
+		handleDirectAdd(store, *nameFlag, *emailFlag)
+	}
+
+	runInteractiveMode(store)
 }
 
 func handleAddContact(store Storer) {
@@ -112,6 +119,15 @@ func handleDirectAdd(store Storer, name, email string) {
 	}
 	fmt.Print("Contact ajouté avec succès : ")
 	contact.Display()
+}
+
+func showMenu() {
+	fmt.Println("\n--- [mini-CRM] ---")
+	fmt.Println("1. Ajouter un contact")
+	fmt.Println("2. Lister tous les contacts")
+	fmt.Println("3. Supprimer un contact")
+	fmt.Println("4. Mettre à jour un contact")
+	fmt.Println("5. Quitter")
 }
 
 func runInteractiveMode(store Storer) {

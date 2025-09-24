@@ -1,15 +1,6 @@
-package main
+package storage
 
 import "fmt"
-
-type Storer interface {
-	Add(contact *Contact) error
-	GetAll() map[int]*Contact
-	GetByID(id int) (*Contact, bool)
-	Remove(id int) error
-	Update(id int, name, email string) error
-	GetNextID() int
-}
 
 type MemoryStore struct {
 	contacts  map[int]*Contact
@@ -24,7 +15,7 @@ func NewMemoryStore() *MemoryStore {
 }
 
 func (ms *MemoryStore) Add(contact *Contact) error {
-	ms.contacts[contact.id] = contact
+	ms.contacts[contact.ID] = contact
 	return nil
 }
 
