@@ -1,0 +1,15 @@
+# Configuration du Mini-CRM
+# Ce fichier permet de configurer le type de stockage utilisé par l'application
+
+storage:
+  # Types de stockage disponibles : "memory", "json", "gorm"
+  # - memory : Stockage en mémoire (données perdues à la fermeture)
+  # - json   : Stockage dans un fichier JSON
+  # - gorm   : Stockage dans une base de données SQLite via GORM
+  type: "gorm"
+  
+  # Fichier JSON utilisé quand type="json"
+  jsonFile: "contacts.json"
+  
+  # Fichier de base de données SQLite utilisé quand type="gorm"
+  dbPath: "contacts.db"

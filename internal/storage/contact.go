@@ -3,9 +3,9 @@ package storage
 import "fmt"
 
 type Contact struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID    int    `json:"id" gorm:"primaryKey;autoIncrement"`
+	Name  string `json:"name" gorm:"not null"`
+	Email string `json:"email" gorm:"unique;not null"`
 }
 
 func (c *Contact) updateContact(name, email string) {

@@ -1,12 +1,9 @@
 package main
 
 import (
-	"go-mini-crm/internal/app"
-	"go-mini-crm/internal/storage"
+	"go-mini-crm/cmd"
 )
 
 func main() {
-
-	store := storage.NewJSONStore()
-	app.Run(store)
+	cmd.Execute()
 }

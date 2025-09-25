@@ -22,7 +22,7 @@ func Run(store Storer) {
 	runInteractiveMode(store)
 }
 
-func handleAddContact(store Storer) {
+func HandleAddContact(store Storer) {
 	fmt.Print("\nNom : ")
 	var name string
 	fmt.Scanln(&name)
@@ -40,7 +40,7 @@ func handleAddContact(store Storer) {
 	fmt.Println("Contact ajouté avec succès")
 }
 
-func handleListContacts(store Storer) {
+func HandleListContacts(store Storer) {
 	contacts := store.GetAll()
 	if len(contacts) == 0 {
 		fmt.Println("\nAucun contact enregistré")
@@ -53,7 +53,7 @@ func handleListContacts(store Storer) {
 	}
 }
 
-func handleRemoveContact(store Storer) {
+func HandleRemoveContact(store Storer) {
 	fmt.Print("Id du contact à supprimer : ")
 	var idStr string
 	fmt.Scanln(&idStr)
@@ -72,7 +72,7 @@ func handleRemoveContact(store Storer) {
 	fmt.Println("Contact supprimé avec succès")
 }
 
-func handleUpdateContact(store Storer) {
+func HandleUpdateContact(store Storer) {
 	fmt.Print("Id du contact à mettre à jour : ")
 	var idStr string
 	fmt.Scanln(&idStr)
@@ -139,13 +139,13 @@ func runInteractiveMode(store Storer) {
 
 		switch choice {
 		case "1":
-			handleAddContact(store)
+			HandleAddContact(store)
 		case "2":
-			handleListContacts(store)
+			HandleListContacts(store)
 		case "3":
-			handleRemoveContact(store)
+			HandleRemoveContact(store)
 		case "4":
-			handleUpdateContact(store)
+			HandleUpdateContact(store)
 		case "5":
 			fmt.Println("C'était un plaisir !")
 			os.Exit(0)
